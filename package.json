@@ -1,0 +1,28 @@
+{
+  "name": "azure",
+  "version": "0.0.1",
+  "dependencies": {
+    "@microsoft/sp-http": "^1.7.1",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "dotenv": "^2.0.0",
+    "express": "^4.13.3",
+    "express-bearer-token": "^2.2.0",
+    "moment": "^2.22.2",
+    "moment-timezone": "^0.5.23",
+    "morgan": "^1.6.1",
+    "multer": "^1.4.1",
+    "node-fetch": "^2.2.1",
+    "node-json-transform": "^1.0.17",
+    "passport": "^0.2.2",
+    "shelljs": "^0.8.3",
+    "swagger-ui-express": "^4.0.2"
+  },
+  "engines": {
+    "node": "8.11.1"
+  },
+  "scripts": {
+    "staging": "node deploy/staging.js",
+    "production": "node deploy/production.js"
+  }
+}
