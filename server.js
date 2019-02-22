@@ -31,6 +31,7 @@ app.use(require('morgan')('combined'))
 app.use("/appservices", require('./routes/appServices'))
 app.use("/clientApps", require('./routes/clientApplications'))
 app.use("/apiApps", require('./routes/apiApplications'))
+app.use("/serverlessApps", require('./routes/serverlessApplications'))
 
 // production error handler
 if (app.get('env') === 'production') {

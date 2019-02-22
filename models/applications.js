@@ -4,10 +4,20 @@ const app = {
     item: {
         name: 'name',
         status: 'properties.state',
+        url: 'properties.defaultHostName',
         resourceGroup: 'properties.resourceGroup'
     }
 }
 
+const func = {
+    list: 'value',
+    item: {
+        name: 'properties.name'
+    }
+}
+
+
 module.exports = {
-    app
+    app,
+    func
 }
