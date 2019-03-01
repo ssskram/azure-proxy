@@ -14,7 +14,7 @@ router.get('/allApis',
     async function (req, res) {
         const valid = (checkToken(req.token))
         if (valid == true) {
-            fetch("https://management.usgovcloudapi.net/subscriptions/07fefdba-84eb-4d6b-b398-ab8737a57f95/resourceGroups/api-applications/providers/Microsoft.Web/sites?includeSlots=true&api-version=2016-08-01", {
+            fetch("https://management.usgovcloudapi.net/subscriptions/07fefdba-84eb-4d6b-b398-ab8737a57f95/resourceGroups/api-applications/providers/Microsoft.Web/sites?api-version=2016-08-01", {
                     method: 'get',
                     headers: new Headers({
                         'Authorization': 'Bearer ' + await refreshToken(),
