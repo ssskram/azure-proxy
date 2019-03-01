@@ -23,7 +23,7 @@ router.get('/allApis',
                 })
                 .then(res => res.json())
                 .then(data => {
-                    res.status(200).send(dt(data, models.app).transform())
+                    res.status(200).send(dt(data, models.app).transform().sort((a, b) => a.name.localeCompare(b.name)))
                 })
                 .catch(err => res.status(500).send(err))
         } else res.status(403).end()
