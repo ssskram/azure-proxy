@@ -18,15 +18,6 @@ const deployment = {
     }]
 }
 
-const sourceControl = {
-    list: '',
-    item: {
-        repo: 'properties.repoUrl',
-        branch: 'properties.branch'
-    }
-}
-
 module.exports = {
-    deployment,
-    sourceControl
+    deployment
 }
