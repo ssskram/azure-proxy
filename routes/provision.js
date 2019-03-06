@@ -29,7 +29,12 @@ router.post('/api',
                 })
             })
                 .then(res => res.json())
-                .then(data => res.status(200).send(dt(data, models.app).transform()))
+                .then(data => res.status(200).send({
+                    name: data.name,
+                    status: data.properties.state,
+                    url: data.properties.defaultHostName,
+                    resourceGroup: data.properties.resourceGroup
+                }))
                 .catch(err => res.status(500).send(err))
 
         } else res.status(403).end()
@@ -57,7 +62,12 @@ router.post('/client',
                 })
             })
                 .then(res => res.json())
-                .then(data => res.status(200).send(dt(data, models.app).transform()))
+                .then(data => res.status(200).send({
+                    name: data.name,
+                    status: data.properties.state,
+                    url: data.properties.defaultHostName,
+                    resourceGroup: data.properties.resourceGroup
+                }))
                 .catch(err => res.status(500).send(err))
         } else res.status(403).end()
     }
@@ -84,7 +94,12 @@ router.post('/lambda',
                 })
             })
                 .then(res => res.json())
-                .then(data => res.status(200).send(dt(data, models.app).transform()))
+                .then(data => res.status(200).send({
+                    name: data.name,
+                    status: data.properties.state,
+                    url: data.properties.defaultHostName,
+                    resourceGroup: data.properties.resourceGroup
+                }))
                 .catch(err => res.status(500).send(err))
         } else res.status(403).end()
     }
