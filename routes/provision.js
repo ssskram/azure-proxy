@@ -23,7 +23,8 @@ router.post('/api',
                     kind: 'api',
                     location: 'USGov Virginia',
                     properties: {
-                        httpsOnly: true
+                        httpsOnly: true,
+                        serverFarmId: '/subscriptions/07fefdba-84eb-4d6b-b398-ab8737a57f95/resourceGroups/app-services/providers/Microsoft.Web/serverfarms/api-apps-1'
                     }
                 })
             })
@@ -50,7 +51,8 @@ router.post('/client',
                     kind: 'app',
                     location: 'USGov Virginia',
                     properties: {
-                        httpsOnly: true
+                        httpsOnly: true,
+                        serverFarmId: '/subscriptions/07fefdba-84eb-4d6b-b398-ab8737a57f95/resourceGroups/app-services/providers/Microsoft.Web/serverfarms/client-apps-1'
                     }
                 })
             })
@@ -76,7 +78,8 @@ router.post('/lambda',
                     kind: 'functionapp',
                     location: 'USGov Virginia',
                     properties: {
-                        httpsOnly: true
+                        httpsOnly: true,
+                        serverFarmId: '/subscriptions/07fefdba-84eb-4d6b-b398-ab8737a57f95/resourceGroups/app-services/providers/Microsoft.Web/serverfarms/serverless-apps-1'
                     }
                 })
             })
