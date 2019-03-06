@@ -4,6 +4,7 @@ const checkToken = require('../token')
 const refreshToken = require('../refresh')
 const fetch = require('node-fetch')
 const dt = require('node-json-transform').DataTransform
+const models = require('../models/applications')
 
 global.Headers = fetch.Headers
 
@@ -27,7 +28,7 @@ router.post('/api',
                 })
             })
                 .then(res => res.json())
-                .then(data => res.status(200).send(data))
+                .then(data => res.status(200).send(dt(data, models.app).transform()))
                 .catch(err => res.status(500).send(err))
 
         } else res.status(403).end()
@@ -54,7 +55,7 @@ router.post('/client',
                 })
             })
                 .then(res => res.json())
-                .then(data => res.status(200).send(data))
+                .then(data => res.status(200).send(dt(data, models.app).transform()))
                 .catch(err => res.status(500).send(err))
         } else res.status(403).end()
     }
@@ -80,7 +81,7 @@ router.post('/lambda',
                 })
             })
                 .then(res => res.json())
-                .then(data => res.status(200).send(data))
+                .then(data => res.status(200).send(dt(data, models.app).transform()))
                 .catch(err => res.status(500).send(err))
         } else res.status(403).end()
     }
