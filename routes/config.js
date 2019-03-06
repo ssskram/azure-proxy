@@ -40,7 +40,7 @@ router.post('/appSettings',
                 })
             })
                 .then(res => res.json())
-                .then(data => res.status(200).send({ settings: data }))
+                .then(data => res.status(200).send({ settings: data.properties }))
                 .catch(err => res.status(500).send(err))
         } else res.status(403).end()
     }
