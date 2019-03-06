@@ -35,6 +35,7 @@ app.use("/serverlessApps", require('./routes/serverlessApplications'))
 app.use("/deployments", require('./routes/deployments'))
 app.use("/metrics", require('./routes/metrics'))
 app.use("/config", require('./routes/config'))
+app.use("/provision", require('./routes/provision'))
 
 // production error handler
 if (app.get('env') === 'production') {
