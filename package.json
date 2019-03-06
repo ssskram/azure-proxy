@@ -16,7 +16,8 @@
     "node-json-transform": "^1.0.17",
     "passport": "^0.2.2",
     "shelljs": "^0.8.3",
-    "swagger-ui-express": "^4.0.2"
+    "swagger-ui-express": "^4.0.2",
+    "uuid": "^3.3.2"
   },
   "engines": {
     "node": "8.11.1"

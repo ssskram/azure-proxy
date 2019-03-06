@@ -3,8 +3,7 @@ const router = express.Router()
 const checkToken = require('../token')
 const refreshToken = require('../refresh')
 const fetch = require('node-fetch')
-const dt = require('node-json-transform').DataTransform
-const models = require('../models/applications')
+const uuid = require('uuid/v1')
 
 global.Headers = fetch.Headers
 
@@ -13,7 +12,7 @@ router.post('/api',
     async function (req, res) {
         const valid = (checkToken(req.token))
         if (valid == true) {
-            fetch("https://management.usgovcloudapi.net/subscriptions/07fefdba-84eb-4d6b-b398-ab8737a57f95/resourceGroups/api-applications/providers/Microsoft.Web/sites/" + req.query.appName + "?api-version=2016-08-01", {
+            fetch("https://management.usgovcloudapi.net/subscriptions/" + process.env.SUBSCRIPTION + "/resourceGroups/api-applications/providers/Microsoft.Web/sites/" + req.query.appName + "?api-version=2016-08-01", {
                 method: 'PUT',
                 headers: new Headers({
                     'Authorization': 'Bearer ' + await refreshToken(),
@@ -24,7 +23,17 @@ router.post('/api',
                     location: 'USGov Virginia',
                     properties: {
                         httpsOnly: true,
-                        serverFarmId: '/subscriptions/07fefdba-84eb-4d6b-b398-ab8737a57f95/resourceGroups/app-services/providers/Microsoft.Web/serverfarms/api-apps-1'
+                        serverFarmId: '/subscriptions/' + process.env.SUBSCRIPTION + '/resourceGroups/app-services/providers/Microsoft.Web/serverfarms/api-apps-1',
+                        siteConfig: {
+                            use32BitWorkerProcess: false,
+                            httpLoggingEnabled: true,
+                            appSettings: [
+                                { name: 'WEBSITE_HTTPLOGGING_RETENTION_DAYS', value: '30' },
+                                { name: 'ASPNETCORE_ENVIRONMENT', value: 'Production' },
+                                { name: 'WEBSITE_NODE_DEFAULT_VERSION', value: '8.11.1' },
+                                { name: 'BEARER', value: await uuid() }
+                            ]
+                        }
                     }
                 })
             })
@@ -46,7 +55,7 @@ router.post('/client',
     async function (req, res) {
         const valid = (checkToken(req.token))
         if (valid == true) {
-            fetch("https://management.usgovcloudapi.net/subscriptions/07fefdba-84eb-4d6b-b398-ab8737a57f95/resourceGroups/client-applications/providers/Microsoft.Web/sites/" + req.query.appName + "?api-version=2016-08-01", {
+            fetch("https://management.usgovcloudapi.net/subscriptions/" + process.env.SUBSCRIPTION + "/resourceGroups/client-applications/providers/Microsoft.Web/sites/" + req.query.appName + "?api-version=2016-08-01", {
                 method: 'PUT',
                 headers: new Headers({
                     'Authorization': 'Bearer ' + await refreshToken(),
@@ -57,7 +66,22 @@ router.post('/client',
                     location: 'USGov Virginia',
                     properties: {
                         httpsOnly: true,
-                        serverFarmId: '/subscriptions/07fefdba-84eb-4d6b-b398-ab8737a57f95/resourceGroups/app-services/providers/Microsoft.Web/serverfarms/client-apps-1'
+                        serverFarmId: '/subscriptions/' + process.env.SUBSCRIPTION + '/resourceGroups/app-services/providers/Microsoft.Web/serverfarms/client-apps-1',
+                        siteConfig: {
+                            use32BitWorkerProcess: false,
+                            httpLoggingEnabled: true,
+                            appSettings: [
+                                { name: 'WEBSITE_HTTPLOGGING_RETENTION_DAYS', value: '30' },
+                                { name: 'ASPNETCORE_ENVIRONMENT', value: 'Production' },
+                                { name: 'WEBSITE_NODE_DEFAULT_VERSION', value: '8.11.1' },
+                                { name: 'REACT_APP_365_API', value: process.env.REACT_APP_365_API },
+                                { name: 'REACT_APP_CART_API', value: process.env.REACT_APP_CART_API },
+                                { name: 'REACT_APP_GOOGLE_API', value: process.env.REACT_APP_GOOGLE_API },
+                                { name: 'REACT_APP_SENDGRID_API', value: process.env.REACT_APP_SENDGRID_API },
+                                { name: 'REACT_APP_MONGO', value: process.env.REACT_APP_MONGO },
+                                { name: 'REACT_APP_AZURE_PROXY', value: process.env.REACT_APP_AZURE_PROXY }
+                            ]
+                        }
                     }
                 })
             })
@@ -78,7 +102,19 @@ router.post('/lambda',
     async function (req, res) {
         const valid = (checkToken(req.token))
         if (valid == true) {
-            fetch("https://management.usgovcloudapi.net/subscriptions/07fefdba-84eb-4d6b-b398-ab8737a57f95/resourceGroups/lambdas/providers/Microsoft.Web/sites/" + req.query.appName + "?api-version=2016-08-01", {
+            let appSettings = [
+                { name: 'AzureWebJobsStorage', value: process.env.AzureWebJobsStorage },
+                { name: 'FUNCTION_APP_EDIT_MODE', value: 'readwrite' },
+                { name: 'FUNCTIONS_EXTENSION_VERSION', value: '~2' },
+                { name: 'WEBSITE_NODE_DEFAULT_VERSION', value: '8.11.1' },
+                { name: 'WEBSITE_TIME_ZONE', value: 'Eastern Standard Time' },
+            ]
+            if (req.query.runtime == 'node') {
+                appSettings.push({name: 'FUNCTIONS_WORKER_RUNTIME', value: 'node' })
+            } else {
+                appSettings.push({name: 'FUNCTIONS_WORKER_RUNTIME', value: 'dotnet' })
+            }
+            fetch("https://management.usgovcloudapi.net/subscriptions/" + process.env.SUBSCRIPTION + "/resourceGroups/lambdas/providers/Microsoft.Web/sites/" + req.query.appName + "?api-version=2016-08-01", {
                 method: 'PUT',
                 headers: new Headers({
                     'Authorization': 'Bearer ' + await refreshToken(),
@@ -89,7 +125,12 @@ router.post('/lambda',
                     location: 'USGov Virginia',
                     properties: {
                         httpsOnly: true,
-                        serverFarmId: '/subscriptions/07fefdba-84eb-4d6b-b398-ab8737a57f95/resourceGroups/app-services/providers/Microsoft.Web/serverfarms/serverless-apps-1'
+                        serverFarmId: '/subscriptions/' + process.env.SUBSCRIPTION + '/resourceGroups/app-services/providers/Microsoft.Web/serverfarms/serverless-apps-1',
+                        siteConfig: {
+                            alwaysOn: true,
+                            use32BitWorkerProcess: false,
+                            appSettings: appSettings
+                        }
                     }
                 })
             })

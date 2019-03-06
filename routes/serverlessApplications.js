@@ -14,7 +14,7 @@ router.get('/allServerlessApps',
     async function (req, res) {
         const valid = (checkToken(req.token))
         if (valid == true) {
-            fetch("https://management.usgovcloudapi.net/subscriptions/07fefdba-84eb-4d6b-b398-ab8737a57f95/resourceGroups/lambdas/providers/Microsoft.Web/sites?api-version=2016-08-01", {
+            fetch("https://management.usgovcloudapi.net/subscriptions/" + process.env.SUBSCRIPTION + "/resourceGroups/lambdas/providers/Microsoft.Web/sites?api-version=2016-08-01", {
                     method: 'get',
                     headers: new Headers({
                         'Authorization': 'Bearer ' + await refreshToken(),
@@ -35,7 +35,7 @@ router.get('/allFunctions',
     async function (req, res) {
         const valid = (checkToken(req.token))
         if (valid == true) {
-            fetch("https://management.usgovcloudapi.net/subscriptions/07fefdba-84eb-4d6b-b398-ab8737a57f95/resourceGroups/lambdas/providers/Microsoft.Web/sites/" + req.query.appName + "/functions?api-version=2016-08-01", {
+            fetch("https://management.usgovcloudapi.net/subscriptions/" + process.env.SUBSCRIPTION + "/resourceGroups/lambdas/providers/Microsoft.Web/sites/" + req.query.appName + "/functions?api-version=2016-08-01", {
                     method: 'get',
                     headers: new Headers({
                         'Authorization': 'Bearer ' + await refreshToken(),
@@ -56,7 +56,7 @@ router.get('/requests',
     async function (req, res) {
         const valid = (checkToken(req.token))
         if (valid == true) {
-            fetch("https://management.usgovcloudapi.net/subscriptions/07fefdba-84eb-4d6b-b398-ab8737a57f95/resourceGroups/client-applications/providers/Microsoft.Web/sites/" + req.query.appName + "/metrics?$filter=name.value eq 'Requests'&api-version=2016-08-01", {
+            fetch("https://management.usgovcloudapi.net/subscriptions/" + process.env.SUBSCRIPTION + "/resourceGroups/client-applications/providers/Microsoft.Web/sites/" + req.query.appName + "/metrics?$filter=name.value eq 'Requests'&api-version=2016-08-01", {
                     method: 'get',
                     headers: new Headers({
                         'Authorization': 'Bearer ' + await refreshToken(),
@@ -77,7 +77,7 @@ router.get('/fourHundo',
     async function (req, res) {
         const valid = (checkToken(req.token))
         if (valid == true) {
-            fetch("https://management.usgovcloudapi.net/subscriptions/07fefdba-84eb-4d6b-b398-ab8737a57f95/resourceGroups/client-applications/providers/Microsoft.Web/sites/" + req.query.appName + "/metrics?$filter=name.value eq 'Http4xx'&api-version=2016-08-01", {
+            fetch("https://management.usgovcloudapi.net/subscriptions/" + process.env.SUBSCRIPTION + "/resourceGroups/client-applications/providers/Microsoft.Web/sites/" + req.query.appName + "/metrics?$filter=name.value eq 'Http4xx'&api-version=2016-08-01", {
                     method: 'get',
                     headers: new Headers({
                         'Authorization': 'Bearer ' + await refreshToken(),
@@ -98,7 +98,7 @@ router.get('/fiveHundo',
     async function (req, res) {
         const valid = (checkToken(req.token))
         if (valid == true) {
-            fetch("https://management.usgovcloudapi.net/subscriptions/07fefdba-84eb-4d6b-b398-ab8737a57f95/resourceGroups/client-applications/providers/Microsoft.Web/sites/" + req.query.appName + "/metrics?$filter=name.value eq 'Http5xx'&api-version=2016-08-01", {
+            fetch("https://management.usgovcloudapi.net/subscriptions/" + process.env.SUBSCRIPTION + "/resourceGroups/client-applications/providers/Microsoft.Web/sites/" + req.query.appName + "/metrics?$filter=name.value eq 'Http5xx'&api-version=2016-08-01", {
                     method: 'get',
                     headers: new Headers({
                         'Authorization': 'Bearer ' + await refreshToken(),

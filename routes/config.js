@@ -12,7 +12,7 @@ router.get('/appSettings',
     async function (req, res) {
         const valid = (checkToken(req.token))
         if (valid == true) {
-            fetch("https://management.usgovcloudapi.net/subscriptions/07fefdba-84eb-4d6b-b398-ab8737a57f95/resourceGroups/" + req.query.resourceGroup + "/providers/Microsoft.Web/sites/" + req.query.appName + "/config/appsettings/list?api-version=2016-08-01", {
+            fetch("https://management.usgovcloudapi.net/subscriptions/" + process.env.SUBSCRIPTION + "/resourceGroups/" + req.query.resourceGroup + "/providers/Microsoft.Web/sites/" + req.query.appName + "/config/appsettings/list?api-version=2016-08-01", {
                 method: 'POST',
                 headers: new Headers({
                     'Authorization': 'Bearer ' + await refreshToken()
@@ -20,6 +20,27 @@ router.get('/appSettings',
             })
                 .then(res => res.json())
                 .then(data => res.status(200).send({ settings: data.properties }))
+                .catch(err => res.status(500).send(err))
+        } else res.status(403).end()
+    }
+)
+
+router.post('/appSettings',
+    async function (req, res) {
+        const valid = (checkToken(req.token))
+        if (valid == true) {
+            fetch("https://management.usgovcloudapi.net/subscriptions/" + process.env.SUBSCRIPTION + "/resourceGroups/" + req.query.resourceGroup + "/providers/Microsoft.Web/sites/" + req.query.appName + "/config/appsettings?api-version=2016-08-01", {
+                method: 'PUT',
+                headers: new Headers({
+                    'Authorization': 'Bearer ' + await refreshToken(),
+                    'Content-Type' : 'application/json'
+                }),
+                body: JSON.stringify({
+                    properties: req.body
+                })
+            })
+                .then(res => res.json())
+                .then(data => res.status(200).send({ settings: data }))
                 .catch(err => res.status(500).send(err))
         } else res.status(403).end()
     }
