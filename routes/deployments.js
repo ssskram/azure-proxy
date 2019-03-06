@@ -27,6 +27,34 @@ router.get('/sourceControl',
     }
 )
 
+// set source control
+router.post('/sourceControl',
+    async function (req, res) {
+        const valid = (checkToken(req.token))
+        if (valid == true) {
+            fetch("https://management.usgovcloudapi.net/subscriptions/" + process.env.SUBSCRIPTION + "/resourceGroups/" + req.query.resourceGroup + "/providers/Microsoft.Web/sites/" + req.query.appName + "/sourcecontrols/web?api-version=2016-08-01", {
+                method: 'PATCH',
+                headers: new Headers({
+                    'Authorization': 'Bearer ' + await refreshToken(),
+                    'Content-Type': 'application/json'
+                }),
+                body: JSON.stringify({
+                    properties: {
+                        repoUrl: req.body.url,
+                        branch: req.body.branch,
+                        isManualIntegration: true,
+                        deploymentRollbackEnabled: false,
+                        isMercurial: false
+                    }
+                })
+            })
+                .then(res => res.json())
+                .then(data => res.status(200).send({ repo: data.properties.repoUrl, branch: data.properties.branch }))
+                .catch(err => res.status(500).send(err))
+        } else res.status(403).end()
+    }
+)
+
 // return deployments per service
 router.get('/allDeployments',
     async function (req, res) {
