@@ -27,7 +27,7 @@ router.get('/sourceControl',
     }
 )
 
-// return source control per service
+// delete source control per service
 router.delete('/sourceControl',
     async function (req, res) {
         const valid = (checkToken(req.token))
@@ -80,7 +80,7 @@ router.get('/allDeployments',
     async function (req, res) {
         const valid = (checkToken(req.token))
         if (valid == true) {
-            fetch("https://management.usgovcloudapi.net/subscriptions/" + process.env.SUBSCRIPTION + "/resourceGroups/" + req.query.resourceGroup + "/providers/Microsoft.Web/sites/" + req.query.appName + "/deployments?api-version=2016-08-01", {
+            fetch("https://management.usgovcloudapi.net/subscriptions/" + process.env.SUBSCRIPTION + "/resourceGroups/" + req.query.resourceGroup + "/providers/Microsoft.Web/sites/" + req.query.appName + "/deployments?api-version=2016-08-01&$top=3", {
                 method: 'get',
                 headers: new Headers({
                     'Authorization': 'Bearer ' + await refreshToken(),
