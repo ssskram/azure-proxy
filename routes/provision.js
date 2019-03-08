@@ -44,6 +44,7 @@ router.post('/api',
                     url: data.properties.defaultHostName,
                     resourceGroup: data.properties.resourceGroup
                 }))
+                .then(() => tellBaloo({ type: 'API', name: req.query.appName}))
                 .catch(err => res.status(500).send(err))
 
         } else res.status(403).end()
@@ -92,6 +93,7 @@ router.post('/client',
                     url: data.properties.defaultHostName,
                     resourceGroup: data.properties.resourceGroup
                 }))
+                .then(() => tellBaloo({ type: 'client', name: req.query.appName}))
                 .catch(err => res.status(500).send(err))
         } else res.status(403).end()
     }
@@ -141,9 +143,25 @@ router.post('/lambda',
                     url: data.properties.defaultHostName,
                     resourceGroup: data.properties.resourceGroup
                 }))
+                .then(() => tellBaloo({ type: 'lambda', name: req.query.appName}))
                 .catch(err => res.status(500).send(err))
         } else res.status(403).end()
     }
 )
+
+const tellBaloo = activity => {
+    fetch("https://baloo.azurewebsites.us/activity", {
+        method: 'POST',
+        headers: new Headers({
+            'Authorization': 'Bearer ' + process.env.BALOO,
+            'Content-Type': 'application/json'
+        }),
+        body: JSON.stringify({
+            activity: "Provision",
+            type: activity.type,
+            service: activity.name
+        })
+    })
+}
 
 module.exports = router

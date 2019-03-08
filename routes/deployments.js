@@ -106,9 +106,23 @@ router.post('/syncSource',
                 })
             })
                 .then(response => res.status(200).send(response.status))
+                .then(() => tellBaloo(req.query.appName))
                 .catch(err => res.status(500).send(err))
         } else res.status(403).end()
     }
 )
 
+const tellBaloo = appName => {
+    fetch("https://baloo.azurewebsites.us/activity", {
+        method: 'POST',
+        headers: new Headers({
+            'Authorization': 'Bearer ' + process.env.BALOO,
+            'Content-Type': 'application/json'
+        }),
+        body: JSON.stringify({
+            activity: "Deployment",
+            service: appName
+        })
+    })
+}
 module.exports = router
