@@ -80,7 +80,7 @@ router.get('/allDeployments',
     async function (req, res) {
         const valid = (checkToken(req.token))
         if (valid == true) {
-            fetch("https://management.usgovcloudapi.net/subscriptions/" + process.env.SUBSCRIPTION + "/resourceGroups/" + req.query.resourceGroup + "/providers/Microsoft.Web/sites/" + req.query.appName + "/deployments?api-version=2016-08-01&$top=3", {
+            fetch("https://management.usgovcloudapi.net/subscriptions/" + process.env.SUBSCRIPTION + "/resourceGroups/" + req.query.resourceGroup + "/providers/Microsoft.Web/sites/" + req.query.appName + "/deployments?api-version=2016-08-01", {
                 method: 'get',
                 headers: new Headers({
                     'Authorization': 'Bearer ' + await refreshToken(),
@@ -88,7 +88,7 @@ router.get('/allDeployments',
                 })
             })
                 .then(res => res.json())
-                .then(data => res.status(200).send(dt(data, models.deployment).transform()))
+                .then(data => es.status(200).send(dt(data, models.deployment).transform()))
                 .catch(err => res.status(500).send(err))
         } else res.status(403).end()
     }
