@@ -80,7 +80,8 @@ router.post('/client',
                                 { name: 'REACT_APP_GOOGLE_API', value: process.env.REACT_APP_GOOGLE_API },
                                 { name: 'REACT_APP_SENDGRID_API', value: process.env.REACT_APP_SENDGRID_API },
                                 { name: 'REACT_APP_MONGO', value: process.env.REACT_APP_MONGO },
-                                { name: 'REACT_APP_AZURE_PROXY', value: process.env.REACT_APP_AZURE_PROXY }
+                                { name: 'REACT_APP_AZURE_PROXY', value: process.env.REACT_APP_AZURE_PROXY },
+                                { name: 'REACT_APP_BLOBLY_API', value: process.env.REACT_APP_BLOBLY_API }
                             ]
                         }
                     }
