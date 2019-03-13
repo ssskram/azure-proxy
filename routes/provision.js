@@ -132,7 +132,12 @@ router.post('/lambda',
                         siteConfig: {
                             alwaysOn: true,
                             use32BitWorkerProcess: false,
-                            appSettings: appSettings
+                            appSettings: appSettings,
+                            cors: {
+                                allowedOrigins: [
+                                    '*'
+                                ]
+                            }
                         }
                     }
                 })
