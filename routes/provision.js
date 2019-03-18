@@ -156,7 +156,7 @@ router.post('/lambda',
 )
 
 const tellBaloo = activity => {
-    fetch("https://baloo.azurewebsites.us/activity", {
+    fetch("https://baloo.azurewebsites.us/azMonitor/activity", {
         method: 'POST',
         headers: new Headers({
             'Authorization': 'Bearer ' + process.env.BALOO,
