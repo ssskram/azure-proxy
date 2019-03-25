@@ -5,7 +5,7 @@ const fetch = require('node-fetch')
 const uuid = require('uuid/v1')
 
 // spin up new service in api resource group
-router.post('/api', (req, res) => {
+router.post('/api', async (req, res) => {
     fetch("https://management.usgovcloudapi.net/subscriptions/" + process.env.SUBSCRIPTION + "/resourceGroups/api-applications/providers/Microsoft.Web/sites/" + req.query.appName + "?api-version=2016-08-01", {
         method: 'PUT',
         headers: new Headers({
