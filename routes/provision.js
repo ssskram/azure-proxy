@@ -191,13 +191,13 @@ router.post("/lambda", async (req, res) => {
 // spin up new virtual machine
 router.post("/virtualMachine", async (req, res) => {
   let vmSize;
-  if (req.query.size == "scrawny") {
+  if (req.query.size == "Scrawny") {
     vmSize = "Standard_B1ms";
     doIt();
-  } else if (req.query.size == "well-fed") {
+  } else if (req.query.size == "Well-fed") {
     vmSize = "Standard_B2s";
     doIt();
-  } else if (req.query.size == "beefcake") {
+  } else if (req.query.size == "Beefcake") {
     vmSize = "Standard_B4ms";
     doIt();
   } else {
