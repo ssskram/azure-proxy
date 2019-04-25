@@ -260,9 +260,14 @@ router.post("/virtualMachine", async (req, res) => {
           location: "USGov Virginia",
           properties: {
             enableAcceleratedNetworking: false,
+            networkSecurityGroup: {
+              name: "open-ports-nsg",
+              id:
+                "/subscriptions/07fefdba-84eb-4d6b-b398-ab8737a57f95/resourceGroups/virtual-machines/providers/Microsoft.Network/networkSecurityGroups/open-ports-nsg"
+            },
             ipConfigurations: [
               {
-                name: "ipconfig1",
+                name: "ipconfig",
                 properties: {
                   publicIPAddress: {
                     id:
