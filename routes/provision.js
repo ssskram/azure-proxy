@@ -193,7 +193,7 @@ router.post("/lambda", async (req, res) => {
 router.post("/virtualMachine", async (req, res) => {
   const vmUserName = req.query.serverName + "Admin";
   const vmPassword = password.generate({
-    length: 15,
+    length: 25,
     numbers: true,
     uppercase: true,
     strict: true
