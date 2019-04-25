@@ -193,20 +193,27 @@ router.post("/virtualMachine", async (req, res) => {
   let vmSize;
   if (req.query.size == "scrawny") {
     vmSize = "Standard_B1ms";
+    doIt();
   } else if (req.query.size == "well-fed") {
     vmSize = "Standard_B2s";
+    doIt();
   } else if (req.query.size == "beefcake") {
     vmSize = "Standard_B4ms";
+    doIt();
   } else {
-    res
-      .status(500)
-      .send({
-        error:
-          "Query parameter size must be one of the following values: scrawny, well-fed, or beefcake.  Stop wasting my time, maggot."
-      });
+    res.status(500).send({
+      error:
+        "Query parameter 'size' must be one of the following values: scrawny, well-fed, or beefcake.  Stop wasting my time, maggot."
+    });
   }
 
-  const createIPAddress = async () => {
+  function doIt() {
+    createIPAddress()
+      .then(createNetworkInterface)
+      .then(createVM);
+  }
+
+  async function createIPAddress() {
     const call = await fetch(
       "https://management.usgovcloudapi.net/subscriptions/" +
         process.env.SUBSCRIPTION +
@@ -234,9 +241,9 @@ router.post("/virtualMachine", async (req, res) => {
     ).catch(err => res.status(500).send(err));
     const response = await call.json();
     return await response.name;
-  };
+  }
 
-  const createNetworkInterface = async ipAddress => {
+  async function createNetworkInterface(ipAddress) {
     const call = await fetch(
       "https://management.usgovcloudapi.net/subscriptions/" +
         process.env.SUBSCRIPTION +
@@ -284,9 +291,9 @@ router.post("/virtualMachine", async (req, res) => {
     } else {
       await createNetworkInterface(req.query.serverName);
     }
-  };
+  }
 
-  const createVM = async () => {
+  async function createVM() {
     await fetch(
       "https://management.usgovcloudapi.net/subscriptions/" +
         process.env.SUBSCRIPTION +
@@ -353,11 +360,7 @@ router.post("/virtualMachine", async (req, res) => {
       })
       .then(() => tellBaloo({ type: "VM", name: req.query.serverName }))
       .catch(err => res.status(500).send(err));
-  };
-
-  createIPAddress()
-    .then(await createNetworkInterface)
-    .then(await createVM);
+  }
 });
 
 const tellBaloo = activity => {
