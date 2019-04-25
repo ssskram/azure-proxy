@@ -210,7 +210,8 @@ router.post("/virtualMachine", async (req, res) => {
   function doIt() {
     createIPAddress()
       .then(createNetworkInterface)
-      .then(createVM);
+      .then(createVM)
+      .then(returnIPAddress);
   }
 
   async function createIPAddress() {
@@ -359,13 +360,34 @@ router.post("/virtualMachine", async (req, res) => {
         })
       }
     )
-      .then(res => res.json())
-      .then(data => {
-        res.status(200).send(data);
-      })
       .then(() => tellBaloo({ type: "VM", name: req.query.serverName }))
       .catch(err => res.status(500).send(err));
   }
+
+  async function returnIPAddress() {
+    const call = await fetch(
+      "https://management.usgovcloudapi.net/subscriptions/" +
+        process.env.SUBSCRIPTION +
+        "/resourceGroups/virtual-machines/providers/Microsoft.Network/publicIPAddresses/" +
+        req.query.serverName +
+        "?api-version=2018-11-01",
+      {
+        method: "GET",
+        headers: new Headers({
+          Authorization: "Bearer " + (await refreshToken()),
+          "Content-Type": "application/json"
+        })
+      }
+    ).catch(err => res.status(500).send(err));
+    const response = await call.json();
+    res.status(200).send({
+      serverName: req.query.serverName,
+      ipAddress: response.properties.ipAddress,
+      adminUsername: process.env.VM_USERNAME,
+      adminPassword: process.env.VM_PASSWORD
+    })
+  }
+
 });
 
 const tellBaloo = activity => {
