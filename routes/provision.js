@@ -272,7 +272,7 @@ router.post("/virtualMachine", async (req, res) => {
             networkSecurityGroup: {
               name: "open-ports-nsg",
               id:
-                "/subscriptions/07fefdba-84eb-4d6b-b398-ab8737a57f95/resourceGroups/virtual-machines/providers/Microsoft.Network/networkSecurityGroups/open-ports-nsg"
+                "/subscriptions/07fefdba-84eb-4d6b-b398-ab8737a57f95/resourceGroups/dont-fucking-touch/providers/Microsoft.Network/networkSecurityGroups/open-ports-nsg"
             },
             ipConfigurations: [
               {
@@ -285,7 +285,7 @@ router.post("/virtualMachine", async (req, res) => {
                   },
                   subnet: {
                     id:
-                      "/subscriptions/07fefdba-84eb-4d6b-b398-ab8737a57f95/resourceGroups/virtual-machines/providers/Microsoft.Network/virtualNetworks/vnet/subnets/default"
+                      "/subscriptions/07fefdba-84eb-4d6b-b398-ab8737a57f95/resourceGroups/dont-fucking-touch/providers/Microsoft.Network/virtualNetworks/vnet/subnets/default"
                   }
                 }
               }
