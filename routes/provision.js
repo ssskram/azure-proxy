@@ -3,6 +3,7 @@ const router = express.Router();
 const refreshToken = require("../refresh");
 const fetch = require("node-fetch");
 const uuid = require("uuid/v1");
+const password = require("generate-password");
 
 // spin up new service in api resource group
 router.post("/api", async (req, res) => {
@@ -190,6 +191,13 @@ router.post("/lambda", async (req, res) => {
 
 // spin up new virtual machine
 router.post("/virtualMachine", async (req, res) => {
+  const vmUserName = req.query.serverName + "Admin";
+  const vmPassword = password.generate({
+    length: 15,
+    numbers: true,
+    uppercase: true,
+    strict: true
+  });
   let vmSize;
   if (req.query.size == "Scrawny") {
     vmSize = "Standard_B1ms";
@@ -319,8 +327,8 @@ router.post("/virtualMachine", async (req, res) => {
               vmSize: vmSize
             },
             osProfile: {
-              adminPassword: process.env.VM_PASSWORD,
-              adminUsername: process.env.VM_USERNAME,
+              adminPassword: vmPassword,
+              adminUsername: vmUserName,
               computerName: req.query.serverName,
               linuxConfiguration: {
                 disablePasswordAuthentication: false
@@ -383,11 +391,10 @@ router.post("/virtualMachine", async (req, res) => {
     res.status(200).send({
       serverName: req.query.serverName,
       ipAddress: response.properties.ipAddress,
-      adminUsername: process.env.VM_USERNAME,
-      adminPassword: process.env.VM_PASSWORD
-    })
+      adminUsername: vmUserName,
+      adminPassword: vmPassword
+    });
   }
-
 });
 
 const tellBaloo = activity => {
