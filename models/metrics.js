@@ -27,6 +27,27 @@ const metric = {
   ]
 };
 
+const VMmetric = {
+  list: "value",
+  item: {
+    type: "name.localizedValue",
+    unit: "unit",
+    metrics: "timeseries"
+  },
+  operate: [
+    {
+      run: ary => 
+        dt(
+          {
+            list: ary[0].data
+          },
+          vmValues
+        ).transform(),
+      on: "metrics"
+    }
+  ]
+}
+
 const values = {
   list: "list",
   item: {
@@ -41,6 +62,21 @@ const values = {
   ]
 };
 
+const vmValues = {
+  list: "list",
+  item: {
+    timestamp: "timeStamp",
+    average: "average"
+  },
+  operate: [
+    {
+      run: dateTransform,
+      on: "timestamp"
+    }
+  ]
+};
+
 module.exports = {
-  metric
+  metric,
+  VMmetric
 };

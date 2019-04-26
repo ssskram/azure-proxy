@@ -98,7 +98,7 @@ router.get("/fiveHundo", async (req, res) => {
 });
 
 // return CPU metrics per application service
-router.get("/cpu", async (req, res) => {
+router.get("/appServiceCpu", async (req, res) => {
   const time = await getSpan(req.query.minutes);
   fetch(
     "https://management.usgovcloudapi.net/subscriptions/" +
@@ -125,8 +125,35 @@ router.get("/cpu", async (req, res) => {
     .catch(err => res.status(500).send(err));
 });
 
+// return CPU metrics per virtual machine
+router.get("/virtualMachineCpu", async (req, res) => {
+  const time = await getSpan(req.query.minutes);
+  fetch(
+    "https://management.usgovcloudapi.net/subscriptions/" +
+      process.env.SUBSCRIPTION +
+      "/resourceGroups/virtual-machines/providers/Microsoft.Compute/virtualMachines/" +
+      req.query.machineName +
+      "/providers/microsoft.insights/metrics?api-version=2018-01-01&metricnames=Percentage%20CPU&timespan=" +
+      time.from +
+      "/" +
+      time.to,
+    {
+      method: "get",
+      headers: new Headers({
+        Authorization: "Bearer " + (await refreshToken()),
+        Accept: "application/json"
+      })
+    }
+  )
+    .then(res => res.json())
+    .then(data => {
+      res.status(200).send(dt(data, metrics.VMmetric).transform());
+    })
+    .catch(err => res.status(500).send(err));
+});
+
 // return memory metrics per application service
-router.get("/memory", async (req, res) => {
+router.get("/appServiceMemory", async (req, res) => {
   const time = await getSpan(req.query.minutes);
   fetch(
     "https://management.usgovcloudapi.net/subscriptions/" +
