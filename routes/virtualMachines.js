@@ -22,11 +22,10 @@ router.get("/allVms", async (req, res) => {
     .then(res => res.json())
     .then(data => {
       res.status(200).send(
-          dt(data, models.virtualMachine)
-            .transform()
-            .sort((a, b) => a.name.localeCompare(b.name))
-        );
-    //   res.status(200).send(data);
+        dt(data, models.virtualMachine)
+          .transform()
+          .sort((a, b) => a.name.localeCompare(b.name))
+      );
     })
     .catch(err => res.status(500).send(err));
 });

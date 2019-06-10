@@ -36,7 +36,7 @@ const VMmetric = {
   },
   operate: [
     {
-      run: ary => 
+      run: ary =>
         dt(
           {
             list: ary[0].data
@@ -46,7 +46,7 @@ const VMmetric = {
       on: "metrics"
     }
   ]
-}
+};
 
 const values = {
   list: "list",
