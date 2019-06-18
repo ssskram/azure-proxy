@@ -1,21 +1,562 @@
 {
-    "swagger": "2.0",
-    "info": {
-        "title": "Azure Proxy",
-        "description": "Monitoring, provisioning, confifguring, deploying",
-        "version": "1.0.0"
-    },
-    "host": "azureproxy.azurewebsites.us",
-    "schemes": [
-        "https"
-    ],
-    "securityDefinitions": {
-        "Bearer": {
-            "type": "apiKey",
-            "name": "Authorization",
-            "in": "header"
-        }
-    },
-    "paths": {
+  "swagger": "2.0",
+  "info": {
+    "title": "Azure Proxy",
+    "description": "Monitoring, provisioning, confifguring, deploying",
+    "version": "1.0.0"
+  },
+  "host": "azureproxy.azurewebsites.us",
+  "schemes": ["https"],
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
     }
+  },
+  "paths": {
+    "/apiApps/allApis": {
+      "get": {
+        "tags": ["API Applications"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "All APIs",
+        "description": "Returns an array of all APIs deployed to Azure",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "An array of applications",
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string"
+                  },
+                  "url": {
+                    "type": "string"
+                  },
+                  "resourceGroup": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access Denied"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/appservices/allServices": {
+      "get": {
+        "tags": ["Application Services"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "All application services",
+        "description": "Returns an array of all app services deployed to Azure",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "An array of app services",
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "resourceGroup": {
+                    "type": "string"
+                  },
+                  "countInstances": {
+                    "type": "number"
+                  },
+                  "status": {
+                    "type": "string"
+                  },
+                  "size": {
+                    "type": "string"
+                  },
+                  "countServices": {
+                    "type": "number"
+                  },
+                  "services": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access Denied"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clientApps/allClients": {
+      "get": {
+        "tags": ["Client Applications"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "All client applications",
+        "description": "Returns an array of all client applications deployed to Azure",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "An array of client apps",
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string"
+                  },
+                  "url": {
+                    "type": "string"
+                  },
+                  "resourceGroup": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access Denied"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/config/appSettings": {
+      "get": {
+        "tags": ["Configuration"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "Application settings",
+        "description": "Returns an object of application settings as key:values",
+        "parameters": [
+          {
+            "name": "resourceGroup",
+            "in": "query",
+            "description": "Name of resource group",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "appName",
+            "in": "query",
+            "description": "Name of application",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Application settings as key:values",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "403": {
+            "description": "Access Denied"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Configuration"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "Application settings",
+        "description": "Sets application settings with object of key:values",
+        "parameters": [
+          {
+            "name": "resourceGroup",
+            "in": "query",
+            "description": "Name of resource group",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "appName",
+            "in": "query",
+            "description": "Name of application",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "properties",
+            "in": "query",
+            "description": "Key:value settings",
+            "required": true,
+            "type": "object"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Application settings as key:values",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "403": {
+            "description": "Access Denied"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deployments/sourceControl": {
+      "get": {
+        "tags": ["Deployments"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "Source control per service",
+        "description": "Returns source control info for application in production",
+        "parameters": [
+          {
+            "name": "resourceGroup",
+            "in": "query",
+            "description": "Name of resource group",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "appName",
+            "in": "query",
+            "description": "Name of application",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An object",
+            "schema": {
+              "type": "object",
+              "items": {
+                "properties": {
+                  "repo": {
+                    "type": "string"
+                  },
+                  "branch": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access Denied"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Deployments"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "Removes source control",
+        "description": "Decouples source control for application in production",
+        "parameters": [
+          {
+            "name": "resourceGroup",
+            "in": "query",
+            "description": "Name of resource group",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "appName",
+            "in": "query",
+            "description": "Name of application",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success!"
+          },
+          "403": {
+            "description": "Access Denied"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Deployments"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "Sets source control",
+        "description": "Defines source control for application in production",
+        "parameters": [
+          {
+            "name": "resourceGroup",
+            "in": "query",
+            "description": "Name of resource group",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "appName",
+            "in": "query",
+            "description": "Name of application",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success!",
+            "schema": {
+              "type": "object",
+              "items": {
+                "properties": {
+                  "repo": {
+                    "type": "string"
+                  },
+                  "branch": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access Denied"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deployments/allDeployments": {
+      "get": {
+        "tags": ["Deployments"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "Deployment history",
+        "description": "Returns an array of deployment history per application deployed to Azure",
+        "parameters": [
+          {
+            "name": "resourceGroup",
+            "in": "query",
+            "description": "Name of resource group",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "appName",
+            "in": "query",
+            "description": "Name of application",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of deployment history",
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "author": {
+                    "type": "string"
+                  },
+                  "message": {
+                    "type": "string"
+                  },
+                  "completed": {
+                    "type": "string"
+                  },
+                  "active": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access Denied"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deployments/syncSource": {
+        "post": {
+          "tags": ["Deployments"],
+          "security": [
+            {
+              "Bearer": []
+            }
+          ],
+          "summary": "Deploy from source",
+          "description": "Triggers a deployment from source control",
+          "parameters": [
+            {
+              "name": "resourceGroup",
+              "in": "query",
+              "description": "Name of resource group",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "appName",
+              "in": "query",
+              "description": "Name of application",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success!"
+            },
+            "403": {
+              "description": "Access Denied"
+            },
+            "500": {
+              "description": "Server Error",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Error": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+  }
 }
