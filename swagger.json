@@ -1121,67 +1121,378 @@
       }
     },
     "/provision/virtualMachine": {
-        "post": {
-          "tags": ["Provisioning"],
-          "security": [
-            {
-              "Bearer": []
-            }
-          ],
-          "summary": "Spin up VM",
-          "description": "Creates a new VM",
-          "parameters": [
-            {
-              "name": "servertName",
-              "in": "query",
-              "description": "Name of server",
-              "required": true,
-              "type": "string"
-            },
-            {
-              "name": "size",
-              "in": "query",
-              "description": "'Scrawny' or 'Well-fed' or 'Beefcake'",
-              "required": true,
-              "type": "string"
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Server information",
-              "items": {
-                "properties": {
-                  "serverName": {
-                    "type": "string"
-                  },
-                  "ipAddress": {
-                    "type": "string"
-                  },
-                  "adminUsername": {
-                    "type": "string"
-                  },
-                  "adminPassword": {
-                    "type": "string"
-                  }
+      "post": {
+        "tags": ["Provisioning"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "Spin up VM",
+        "description": "Creates a new VM",
+        "parameters": [
+          {
+            "name": "servertName",
+            "in": "query",
+            "description": "Name of server",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "'Scrawny' or 'Well-fed' or 'Beefcake'",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Server information",
+            "items": {
+              "properties": {
+                "serverName": {
+                  "type": "string"
+                },
+                "ipAddress": {
+                  "type": "string"
+                },
+                "adminUsername": {
+                  "type": "string"
+                },
+                "adminPassword": {
+                  "type": "string"
                 }
               }
-            },
-            "403": {
-              "description": "Access Denied"
-            },
-            "500": {
-              "description": "Server Error",
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "Error": {
-                    "type": "string"
-                  }
+            }
+          },
+          "403": {
+            "description": "Access Denied"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "type": "string"
                 }
               }
             }
           }
         }
       }
+    },
+    "/serverlessApps/allServerlessApps": {
+      "get": {
+        "tags": ["Serverless"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "All Lambdas",
+        "description": "Returns an array of all lambdas deployed to Azure",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "An array of applications",
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string"
+                  },
+                  "url": {
+                    "type": "string"
+                  },
+                  "resourceGroup": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access Denied"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/serverlessApps/allFunctions": {
+      "get": {
+        "tags": ["Serverless"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "All functions per service",
+        "description": "Returns an array of all functions running in a single lambda",
+        "parameters": [
+          {
+            "name": "appName",
+            "in": "query",
+            "description": "Name of application",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of function names",
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access Denied"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/serverlessApps/requests": {
+      "get": {
+        "tags": ["Serverless"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "Requests on a lambda service",
+        "description": "Returns an array of request activity on service",
+        "parameters": [
+          {
+            "name": "appName",
+            "in": "query",
+            "description": "Name of application",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of requests",
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "timestamp": {
+                    "type": "string"
+                  },
+                  "average": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access Denied"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/serverlessApps/fourHundo": {
+      "get": {
+        "tags": ["Serverless"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "400 errors on a lambda service",
+        "description": "Returns an array of error activity on service",
+        "parameters": [
+          {
+            "name": "appName",
+            "in": "query",
+            "description": "Name of application",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of errors",
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "timestamp": {
+                    "type": "string"
+                  },
+                  "average": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access Denied"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/serverlessApps/fiveHundo": {
+      "get": {
+        "tags": ["Serverless"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "500 errors on a lambda service",
+        "description": "Returns an array of error activity on service",
+        "parameters": [
+          {
+            "name": "appName",
+            "in": "query",
+            "description": "Name of application",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of errors",
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "timestamp": {
+                    "type": "string"
+                  },
+                  "average": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access Denied"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/virtualMachines/allVms": {
+      "get": {
+        "tags": ["Virtual Machines"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "All VMs",
+        "description": "Returns an array of all virtual machines deployed to Azure",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "An array of VMs",
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "size": {
+                    "type": "string"
+                  },
+                  "image": {
+                    "type": "string"
+                  },
+                  "osDisk": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access Denied"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
