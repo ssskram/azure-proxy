@@ -944,6 +944,244 @@
           }
         }
       }
-    }
+    },
+    "/provision/api": {
+      "post": {
+        "tags": ["Provisioning"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "Spin up API",
+        "description": "Creates a new API service",
+        "parameters": [
+          {
+            "name": "appName",
+            "in": "query",
+            "description": "Name of app",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Application information",
+            "items": {
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "resourceGroup": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access Denied"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/provision/client": {
+      "post": {
+        "tags": ["Provisioning"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "Spin up client",
+        "description": "Creates a new client service",
+        "parameters": [
+          {
+            "name": "appName",
+            "in": "query",
+            "description": "Name of app",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Application information",
+            "items": {
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "resourceGroup": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access Denied"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/provision/lambda": {
+      "post": {
+        "tags": ["Provisioning"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "Spin up lambda",
+        "description": "Creates a new 'serverless' service",
+        "parameters": [
+          {
+            "name": "appName",
+            "in": "query",
+            "description": "Name of app",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "runtime",
+            "in": "query",
+            "description": "Execution environment: 'node' or 'dotnet'",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Application information",
+            "items": {
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "resourceGroup": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access Denied"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/provision/virtualMachine": {
+        "post": {
+          "tags": ["Provisioning"],
+          "security": [
+            {
+              "Bearer": []
+            }
+          ],
+          "summary": "Spin up VM",
+          "description": "Creates a new VM",
+          "parameters": [
+            {
+              "name": "servertName",
+              "in": "query",
+              "description": "Name of server",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "size",
+              "in": "query",
+              "description": "'Scrawny' or 'Well-fed' or 'Beefcake'",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Server information",
+              "items": {
+                "properties": {
+                  "serverName": {
+                    "type": "string"
+                  },
+                  "ipAddress": {
+                    "type": "string"
+                  },
+                  "adminUsername": {
+                    "type": "string"
+                  },
+                  "adminPassword": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Access Denied"
+            },
+            "500": {
+              "description": "Server Error",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Error": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
   }
 }
