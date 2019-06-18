@@ -512,51 +512,438 @@
       }
     },
     "/deployments/syncSource": {
-        "post": {
-          "tags": ["Deployments"],
-          "security": [
-            {
-              "Bearer": []
-            }
-          ],
-          "summary": "Deploy from source",
-          "description": "Triggers a deployment from source control",
-          "parameters": [
-            {
-              "name": "resourceGroup",
-              "in": "query",
-              "description": "Name of resource group",
-              "required": true,
-              "type": "string"
-            },
-            {
-              "name": "appName",
-              "in": "query",
-              "description": "Name of application",
-              "required": true,
-              "type": "string"
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Success!"
-            },
-            "403": {
-              "description": "Access Denied"
-            },
-            "500": {
-              "description": "Server Error",
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "Error": {
-                    "type": "string"
-                  }
+      "post": {
+        "tags": ["Deployments"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "Deploy from source",
+        "description": "Triggers a deployment from source control",
+        "parameters": [
+          {
+            "name": "resourceGroup",
+            "in": "query",
+            "description": "Name of resource group",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "appName",
+            "in": "query",
+            "description": "Name of application",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success!"
+          },
+          "403": {
+            "description": "Access Denied"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "type": "string"
                 }
               }
             }
           }
         }
       }
+    },
+    "/metrics/requests": {
+      "get": {
+        "tags": ["Metrics"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "Requests per service",
+        "description": "Returns requests on a service for previous x minutes",
+        "parameters": [
+          {
+            "name": "resourceGroup",
+            "in": "query",
+            "description": "Name of resource group",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "appName",
+            "in": "query",
+            "description": "Name of application",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "minutes",
+            "in": "query",
+            "description": "Span for requests in minutes",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of requests",
+            "items": {
+              "properties": {
+                "timestamp": {
+                  "type": "string"
+                },
+                "average": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access Denied"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/metrics/fourHundo": {
+      "get": {
+        "tags": ["Metrics"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "400 errors per service",
+        "description": "Returns 400 errors on a service for previous x minutes",
+        "parameters": [
+          {
+            "name": "resourceGroup",
+            "in": "query",
+            "description": "Name of resource group",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "appName",
+            "in": "query",
+            "description": "Name of application",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "minutes",
+            "in": "query",
+            "description": "Span for errors in minutes",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of errors",
+            "items": {
+              "properties": {
+                "timestamp": {
+                  "type": "string"
+                },
+                "average": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access Denied"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/metrics/fiveHundo": {
+      "get": {
+        "tags": ["Metrics"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "500 errors per service",
+        "description": "Returns 500 errors on a service for previous x minutes",
+        "parameters": [
+          {
+            "name": "resourceGroup",
+            "in": "query",
+            "description": "Name of resource group",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "appName",
+            "in": "query",
+            "description": "Name of application",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "minutes",
+            "in": "query",
+            "description": "Span for errors in minutes",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of errors",
+            "items": {
+              "properties": {
+                "timestamp": {
+                  "type": "string"
+                },
+                "average": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access Denied"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/metrics/appServiceCPU": {
+      "get": {
+        "tags": ["Metrics"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "CPU usage per app service",
+        "description": "Returns % CPU usage for previous x minutes",
+        "parameters": [
+          {
+            "name": "resourceGroup",
+            "in": "query",
+            "description": "Name of resource group",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "serviceName",
+            "in": "query",
+            "description": "Name of service",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "minutes",
+            "in": "query",
+            "description": "Span for usage in minutes",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of CPU usage",
+            "items": {
+              "properties": {
+                "timestamp": {
+                  "type": "string"
+                },
+                "average": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access Denied"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/metrics/virtualMachineCpu": {
+      "get": {
+        "tags": ["Metrics"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "CPU usage per virtual machine",
+        "description": "Returns % CPU usage for previous x minutes",
+        "parameters": [
+          {
+            "name": "resourceGroup",
+            "in": "query",
+            "description": "Name of resource group",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "machineName",
+            "in": "query",
+            "description": "Name of VM",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "minutes",
+            "in": "query",
+            "description": "Span for usage in minutes",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of CPU usage",
+            "items": {
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "metrics": {
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access Denied"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/metrics/appServiceMemory": {
+      "get": {
+        "tags": ["Metrics"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "Memory usage per app service",
+        "description": "Returns % memory usage for previous x minutes",
+        "parameters": [
+          {
+            "name": "resourceGroup",
+            "in": "query",
+            "description": "Name of resource group",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "serviceName",
+            "in": "query",
+            "description": "Name of app service",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "minutes",
+            "in": "query",
+            "description": "Span for usage in minutes",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of memory usage",
+            "items": {
+              "properties": {
+                "timestamp": {
+                  "type": "string"
+                },
+                "average": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access Denied"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
